@@ -3,6 +3,20 @@ const router = new Router();
 const { auth, db } = require("./../firebase");
 
 
+//funkar. Hämtar random hamster.
+router.get("/random", async (req, res) => {
+
+    let hamsters = [];
+    let snapShot = await db.collection("hamsters").get();
+    
+    snapShot.forEach(doc => {
+        hamsters.push(doc.data());
+    })
+    let random = Math.floor(Math.random() * hamsters.length);
+    res.send( hamsters[random] );
+
+});
+
 //funkar. Hämtar alla hamsters i hela världen
 router.get("/", async (req, res) => {
 
@@ -12,22 +26,24 @@ router.get("/", async (req, res) => {
     snapShot.forEach(doc => {
         hamsters.push(doc.data());
     })
-    res.send({ hamsters: hamsters});
+    res.send( hamsters );
 
 });
 
 //funkar. Hämtar hamster med specifikt ID
 router.get("/:id", async (req, res) => {
-    let hamster = [];
+    let hamster;
     let snapShot =  await db.collection("hamsters").where("id", "==", parseInt(req.params.id)).get();
 
     snapShot.forEach(doc => {
-        hamster.push(doc.data());
+        hamster = doc.data();
     })
 
-    res.send({ hamster: hamster});
+    res.send( hamster );
 
 });
+
+
 
 
 
@@ -62,5 +78,6 @@ router.put("/:id/results", async (req, res) => {
         res.send(500, err)
     }
 
-})
+});
+
 module.exports = router;
