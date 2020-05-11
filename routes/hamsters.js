@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = new Router();
-const { auth, db } = require("./../firebase");
+const { db } = require("./../firebase");
 
 
 //funkar. Hämtar random hamster.
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
     snapShot.forEach(doc => {
         hamsters.push(doc.data());
     })
-    res.send( hamsters );
+    res.send( {hamsters: hamsters} );
 
 });
 
@@ -39,34 +39,31 @@ router.get("/:id", async (req, res) => {
         hamster = doc.data();
     })
 
-    res.send( hamster );
+    res.send({hamster: hamster});
 
 });
 
 
-
-
-
-
+//funkar. Uppdaterar wins/defeats/games i databasen vid en PUT
 router.put("/:id/results", async (req, res) => {
     try {
     //leta reda på hamster med ID :id
-    let snapShot =  await db.collection("hamsters").where("id", "==", parseInt(req.params.id)).orderBy("name").get();
+    let snapShot =  await db.collection("hamsters").where("id", "==", parseInt(req.params.id)).get();
     console.log(req.body);
     console.log(snapShot);
     
-    //loopa igenom resultatet
+     //loopa igenom resultatet
     snapShot.forEach(doc => {
         let hamster = doc.data(); //Få ut info på firestore obj. (data)
         
-        //wins
-        //uppdatera egenskaperna
+         //wins
+         //uppdatera egenskaperna
         hamster.wins += parseInt(req.body.wins);
-        hamster.defeats += parseInt(req.body.wins);
-        hamster.games += parseInt(req.body.wins);
+        hamster.defeats += parseInt(req.body.defeats);
+        hamster.games += parseInt(req.body.games);
         
 
-        //skriv in den nya uppdaterade hamstern i db
+         //skriv in den nya uppdaterade hamstern i db
         db.collection("hamsters").doc(doc.id).set(hamster)
         .then(res.send({ msg: "hamster updated!"}))
         .catch(err => {throw err;});
@@ -75,7 +72,7 @@ router.put("/:id/results", async (req, res) => {
 
     catch(err) {
         console.error(err)
-        res.send(500, err)
+        res.send(500).send(err);
     }
 
 });
