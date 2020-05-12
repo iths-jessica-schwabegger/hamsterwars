@@ -4,18 +4,18 @@ const { db } = require("./../firebase");
 
 //funkar. Hämtar alla games.
 router.get("/", async (req, res) => {
-    //try
-    let games = [];
+    try {
+        let games = [];
+        let snapShot = await db.collection("games").get();
 
-    let snapShot = await db.collection("games").get();
-
-    snapShot.forEach(doc => {
-        games.push(doc.data());
-    });
-
-    res.send({ games: games });
-
-    //catch
+        snapShot.forEach(doc => {
+            games.push(doc.data());
+        })
+        res.send({ games: games });
+    }
+    catch(err) {
+        res.send(500).send(err);
+    }
 
 })
 
