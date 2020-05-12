@@ -49,20 +49,20 @@ router.put("/:id/results", async (req, res) => {
     try {
     //leta reda på hamster med ID :id
     let snapShot =  await db.collection("hamsters").where("id", "==", parseInt(req.params.id)).get();
-    console.log(req.body);
-    console.log(snapShot);
     
      //loopa igenom resultatet
     snapShot.forEach(doc => {
         let hamster = doc.data(); //Få ut info på firestore obj. (data)
         
-         //wins
          //uppdatera egenskaperna
-        hamster.wins += parseInt(req.body.wins);
-        hamster.defeats += parseInt(req.body.defeats);
-        hamster.games += parseInt(req.body.games);
+        if(parseInt(req.body.wins) > 0 ) {
+            hamster.wins++;
+        }
+        if(parseInt(req.body.defeats) > 0 ) {
+            hamster.defeats++;
+        }
+        hamster.games += 1;
         
-
          //skriv in den nya uppdaterade hamstern i db
         db.collection("hamsters").doc(doc.id).set(hamster)
         .then(res.send({ msg: "hamster updated!"}))

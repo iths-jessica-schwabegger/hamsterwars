@@ -11,6 +11,12 @@ const hamstersRoute = require("./routes/hamsters");
 app.use("/hamsters", hamstersRoute);
 const assetsRoute = require("./routes/assets");
 app.use("/assets", assetsRoute);
+const chartsRoute = require("./routes/charts");
+app.use("/charts", chartsRoute);
+const gamesRoute = require("./routes/games");
+app.use("/games", gamesRoute);
+const statsRoute = require("./routes/stats");
+app.use("/stats", statsRoute);
 
 
 app.listen(3000, () => {
