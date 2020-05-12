@@ -7,7 +7,7 @@ admin.initializeApp({
   databaseURL: "https://hamst3rwars.firebaseio.com"
 });
 
-let auth = admin.auth();
+//let auth = admin.auth();
 let db = admin.firestore();
 
 
@@ -29,4 +29,4 @@ let db = admin.firestore();
 //     })
 // })
 
-module.exports = { auth, db };
+module.exports = { db };
