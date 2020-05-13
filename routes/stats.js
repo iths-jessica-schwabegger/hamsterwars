@@ -12,8 +12,6 @@ router.get("/total", async (req, res) => {
             total.push(doc.data());
         })
 
-        //ny collection?
-        //await db.collection("stats").doc().set(total);
         res.send({totalGames: total.length});
 
     }
@@ -21,8 +19,6 @@ router.get("/total", async (req, res) => {
         res.status(500).send(err);
     }
 })
-
-
 
 
 module.exports = router;

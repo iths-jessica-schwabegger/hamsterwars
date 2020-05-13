@@ -1,6 +1,8 @@
 
 const express = require("express");
 const app = express();
+require('dotenv').config();
+
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -10,6 +12,16 @@ app.use((req, res, next) => {
 
     if(req.method !== "GET") {
 
+        //API-nyckel sparad i .env-filen
+        const APIKey = process.env.KEY;
+
+        //jämför API-nyckel med nyckeln under auth i headers vid post/put
+        if(APIKey === req.headers["authorization"]) {
+            next();
+        }
+        else {
+            res.send({Error: "You need a secret key to do that!"})
+        }
 
     }else {
         next();
