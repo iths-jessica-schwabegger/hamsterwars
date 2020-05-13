@@ -7,14 +7,11 @@ app.use(express.json());
 
 
 //----------------ROUTES-----------------
-let images = require('path').join(__dirname,'/hamsters');
 app.use("/", express.static("public"));
-app.use("/assets", express.static(images));
+app.use("/assets", express.static("hamsters"));
 
 const hamstersRoute = require("./routes/hamsters");
 app.use("/hamsters", hamstersRoute);
-// const assetsRoute = require("./routes/assets");
-// app.use("/assets", assetsRoute);
 const chartsRoute = require("./routes/charts");
 app.use("/charts", chartsRoute);
 const gamesRoute = require("./routes/games");
