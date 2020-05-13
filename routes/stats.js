@@ -11,6 +11,9 @@ router.get("/total", async (req, res) => {
         snapShot.forEach(doc => {
             total.push(doc.data());
         })
+
+        //ny collection?
+        //await db.collection("stats").doc().set(total);
         res.send({totalGames: total.length});
 
     }

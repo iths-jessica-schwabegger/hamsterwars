@@ -5,6 +5,18 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 
+//---------------Auth middleware------------------
+app.use((req, res, next) => {
+
+    if(req.method !== "GET") {
+
+
+    }else {
+        next();
+    }
+
+})
+
 
 //----------------ROUTES-----------------
 app.use("/", express.static("public"));
