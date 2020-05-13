@@ -49,11 +49,11 @@ router.post("/", async (req, res) => {
                 }
             }
         }
-        //Lägger in datum och objekt med rätt ID i objekt.
+        //Lägger in datum och objekt med rätt ID i nytt gameobjekt.
         let gameObj = {
             timeStamp: Date(),
             contestants: contestants
-            //winner: 
+            //winner: id
         }
             //Lägger in objekt i firestore.
             await db.collection("games").doc().set(gameObj)
@@ -64,6 +64,7 @@ router.post("/", async (req, res) => {
         res.send(500).send(err);
     }
 })
+
 
 
 module.exports = router;
