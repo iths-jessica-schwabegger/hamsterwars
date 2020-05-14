@@ -1,10 +1,6 @@
-
+require('dotenv').config();
 const express = require("express");
 const app = express();
-require('dotenv').config();
-
-
-app.use(express.static("public"));
 app.use(express.json());
 
 //---------------Auth middleware------------------
@@ -26,13 +22,12 @@ app.use((req, res, next) => {
     }else {
         next();
     }
-
 })
-
 
 //----------------ROUTES-----------------
 app.use("/", express.static("public"));
-app.use("/assets", express.static("hamsters"));
+app.use("/assets", express.static("assets/hamsters"));
+app.use("/assets/upload", express.static("assets"));
 
 const hamstersRoute = require("./routes/hamsters");
 app.use("/hamsters", hamstersRoute);
@@ -43,6 +38,7 @@ app.use("/games", gamesRoute);
 const statsRoute = require("./routes/stats");
 app.use("/stats", statsRoute);
 
+//-----------------------------------------
 
 app.listen(3000, () => {
     console.log("Server is up and running!");

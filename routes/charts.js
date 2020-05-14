@@ -12,7 +12,7 @@ router.get("/top", async (req, res) => {
         snapShot.forEach(doc => {
             topHamsters.push(doc.data());
         })
-        res.send({ topHamsters: topHamsters });
+        res.send({topHamsters: topHamsters});
     }
     catch(err) {
         res.status(500).send(err);

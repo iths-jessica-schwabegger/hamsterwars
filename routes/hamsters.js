@@ -2,7 +2,6 @@ const { Router } = require("express");
 const router = new Router();
 const { db } = require("./../firebase");
 
-
 //Hämtar random hamster.
 router.get("/random", async (req, res) => {
     try {
@@ -61,11 +60,10 @@ router.put("/:id/results", async (req, res) => {
         //leta reda på hamster med ID :id
         let snapShot =  await db.collection("hamsters").where("id", "==", parseInt(req.params.id)).get();
         
-        //loopa igenom resultatet
         snapShot.forEach(doc => {
-            let hamster = doc.data(); //Få ut info på firestore obj. (data)
+            let hamster = doc.data();
             
-            //uppdatera egenskaperna
+            //uppdatera wins/defeats/games på hamster
             if(parseInt(req.body.wins) > 0 ) {
                 hamster.wins++;
             }
@@ -84,4 +82,34 @@ router.put("/:id/results", async (req, res) => {
     }
 });
 
+router.post("/", async (req, res) => {
+    try {
+        let hamsters = [];
+        let snapShot = await db.collection("hamsters").get();
+
+        snapShot.forEach(doc => {
+            hamsters.push(doc.data());
+        })
+        console.log(hamsters.length);
+        db.collection("hamsters").doc().set({
+            id: hamsters.length+1,
+            name: req.body.name,
+            age: req.body.age,
+            favFood: req.body.favFood,
+            loves: req.body.loves,
+            imgName: `hamster-${hamsters.length+1}.jpg`, //uploaded img name bör döpas till samma
+            wins: 0,
+            defeats: 0,
+            games: 0
+        });
+
+        res.send({ msg: "New hamster up for a fight!" });
+    }
+    catch(err) {
+        res.status(500).send(err);
+    }
+
+})
+
 module.exports = router;
+

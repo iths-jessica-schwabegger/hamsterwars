@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = new Router();
 const { db } = require("./../firebase");
 
-//funkar. Hämtar alla games.
+//Hämtar alla games.
 router.get("/", async (req, res) => {
     try {
         let games = [];
@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
 
 })
 
+//Sparar ett game
 router.post("/", async (req, res) => {
     try {
         let gamesDoc = await db.collection("games").doc();
